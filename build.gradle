@@ -4,9 +4,13 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.franzbecker:gradle-lombok:1.14"
 	}
 }
 
@@ -14,6 +18,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'io.franzbecker.gradle-lombok' //Needed to make Lombok work with Eclipse
 
 group = 'com.lucas.learningspringboot'
 version = '0.0.1-SNAPSHOT'
@@ -32,9 +37,11 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
 	implementation('org.springframework.cloud:spring-cloud-starter-config')
 	implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
 	compileOnly('org.projectlombok:lombok')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('io.projectreactor:reactor-test')
+	//testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
 }
 
 dependencyManagement {
