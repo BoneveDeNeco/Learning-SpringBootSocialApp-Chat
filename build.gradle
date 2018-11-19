@@ -41,7 +41,8 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('io.projectreactor:reactor-test')
-	//testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
+	testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
+	testImplementation('org.glassfish.tyrus.bundles:tyrus-standalone-client:1.9')
 }
 
 dependencyManagement {
