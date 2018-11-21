@@ -23,13 +23,13 @@ public class WebSocketConfig {
 	
 	@Bean
 	public HandlerMapping webSocketMapping(CommentService commentService, 
-			InboundChatService inboundChatService/*,
-			OutboundChatServic outboundChatService*/) {
+			InboundChatService inboundChatService,
+			OutboundChatService outboundChatService) {
 		
 		Map<String, WebSocketHandler> urlMap = new HashMap<>();
 		urlMap.put("/topic/comments.new", commentService);
 		urlMap.put("/app/chatMessage.new", inboundChatService);
-		//urlMap.put("/topic/chatMessage.new", outboundChatService);
+		urlMap.put("/topic/chatMessage.new", outboundChatService);
 		
 		Map<String, CorsConfiguration> corsConfigurationMap = new HashMap<>();
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
