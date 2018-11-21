@@ -22,13 +22,13 @@ import reactor.core.publisher.Flux;
 @Ignore
 public class InboundChatServiceTest {
 	
-	InboundChatWebSocketHandler inboundChatService;
+	InboundChatService inboundChatService;
 	ChatServiceStreams chatServiceStream;
 	
 	@Before
 	public void setup() {
 		chatServiceStream = mock(ChatServiceStreams.class);
-		inboundChatService = new InboundChatWebSocketHandler(chatServiceStream);
+		inboundChatService = new InboundChatService(chatServiceStream);
 	}
 	
 	@Test

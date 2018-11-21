@@ -15,11 +15,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 @EnableBinding(ChatServiceStreams.class)
-public class InboundChatWebSocketHandler implements WebSocketHandler {
+public class InboundChatService implements WebSocketHandler {
 
 	private ChatServiceStreams chatServiceStreams;
 	
-	public InboundChatWebSocketHandler(ChatServiceStreams chatServiceStreams) {
+	public InboundChatService(ChatServiceStreams chatServiceStreams) {
 		this.chatServiceStreams = chatServiceStreams;
 	}
 	

@@ -23,7 +23,7 @@ public class WebSocketConfig {
 	
 	@Bean
 	public HandlerMapping webSocketMapping(CommentService commentService, 
-			InboundChatWebSocketHandler inboundChatService/*,
+			InboundChatService inboundChatService/*,
 			OutboundChatServic outboundChatService*/) {
 		
 		Map<String, WebSocketHandler> urlMap = new HashMap<>();

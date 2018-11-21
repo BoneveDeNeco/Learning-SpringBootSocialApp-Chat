@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class InboundChatServiceIntegrationTest {
+public class InboundChatServiceIntegrationTests {
 	
 	private static final String MESSAGE = "Test";
 
@@ -41,7 +41,7 @@ public class InboundChatServiceIntegrationTest {
 	MessageCollector messageCollector;
 	
 	@SpyBean
-	InboundChatWebSocketHandler handler;
+	InboundChatService handler;
 	
 	String sessionId = "";
 	
