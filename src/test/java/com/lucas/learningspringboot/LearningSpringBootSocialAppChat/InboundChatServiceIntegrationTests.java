@@ -32,6 +32,8 @@ import reactor.core.publisher.Mono;
 @ActiveProfiles("test")
 public class InboundChatServiceIntegrationTests {
 	
+	private static final String USER = "Marvin";
+
 	private static final String MESSAGE = "Test";
 
 	@Autowired
@@ -57,19 +59,17 @@ public class InboundChatServiceIntegrationTests {
 	}
 	
 	@Test
-	public void prependsMessageWithSessionId() throws URISyntaxException {
+	public void returnsUsernameInHeader() throws URISyntaxException {
 		sendMessage(MESSAGE);
 		
 		Message<?> message = collectMessageFromChannel(chatServiceStreams.clientToBroker());
 		
-		ArgumentCaptor<WebSocketSession> argumentCaptor = ArgumentCaptor.forClass(WebSocketSession.class);
-		Mockito.verify(handler).handle(argumentCaptor.capture());
-		assertThat(message.getPayload()).isEqualTo(argumentCaptor.getValue().getId() + ": " + MESSAGE);
+		assertThat(message.getHeaders().get(ChatServiceStreams.USER_HEADER)).isEqualTo(USER);
 	}
 	
 	private void sendMessage(String message) throws URISyntaxException {
 		WebSocketClient webSocketClient = new StandardWebSocketClient();
-		webSocketClient.execute(new URI("ws://localhost:"+ port +"/app/chatMessage.new"), new WebSocketHandler() {
+		webSocketClient.execute(new URI("ws://localhost:"+ port +"/app/chatMessage.new?user=" + USER), new WebSocketHandler() {
 			
 			@Override
 			public Mono<Void> handle(WebSocketSession session) {

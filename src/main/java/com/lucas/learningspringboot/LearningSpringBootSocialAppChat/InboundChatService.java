@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @EnableBinding(ChatServiceStreams.class)
-public class InboundChatService implements WebSocketHandler {
+public class InboundChatService extends UserParsingHandshakeHandler {
 
 	private ChatServiceStreams chatServiceStreams;
 	
@@ -24,23 +24,22 @@ public class InboundChatService implements WebSocketHandler {
 	}
 	
 	@Override
-	public Mono<Void> handle(WebSocketSession session) {
+	public Mono<Void> handleInternal(WebSocketSession session) {
 		return session.receive()
-				.log("Inbound: incoming chat message")
+				.log("Inbound: incoming chat message (" +getUser(session.getId())+ ")")
 				.map(WebSocketMessage::getPayloadAsText)
-				.log("Inbound: convert to text")
-				.map(message -> session.getId() + ": " + message)
-				.log("Inbound: mark with session id")
-				.map(MessageBuilder::withPayload)
-				.map(MessageBuilder::build)
-				.flatMap(this::broadcast)
-				.log("Inbound: broadcast to broker")
+				.log("Inbound: convert to text (" +getUser(session.getId())+ ")")
+				.flatMap(message -> broadcast(message, getUser(session.getId())))
+				.log("Inbound: broadcast to broker (" +getUser(session.getId())+ ")")
 				.then();
 	}
 	
-	private Mono<?> broadcast(Message<String> message) {
+	private Mono<?> broadcast(String message, String username) {
 		return Mono.fromRunnable(() -> { 
-			chatServiceStreams.clientToBroker().send(message);
+			chatServiceStreams.clientToBroker().send(
+					MessageBuilder.withPayload(message)
+						.setHeader(ChatServiceStreams.USER_HEADER, username)
+						.build());
 		});
 	}
 	

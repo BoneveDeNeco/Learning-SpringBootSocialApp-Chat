@@ -62,7 +62,7 @@ public class OutboundChatServiceIntegrationTests {
 	
 	@Test
 	public void receivesMessageFromBroker() {
-		assertThat(sendMessage()).isTrue();
+		assertThat(sendMessage(MESSAGE)).isTrue();
 	}
 	
 	@Test
@@ -76,13 +76,13 @@ public class OutboundChatServiceIntegrationTests {
 	public void redirectsIncomingMessageFromBrokerToWebSocketClients() throws InterruptedException, ExecutionException, TimeoutException {
 		TestWebSocketHandler testWebSocketHandler = connectToOutboundChatService();
 		
-		sendMessage();
+		sendMessage(MESSAGE);
 
 		assertThat(testWebSocketHandler.receivedMessage.get(10, TimeUnit.SECONDS)).isEqualTo(MESSAGE);
 	}
 	
-	private boolean sendMessage() {
-		return chatServiceStreams.brokerToClient().send(MessageBuilder.withPayload(MESSAGE).build());
+	private boolean sendMessage(String message) {
+		return chatServiceStreams.brokerToClient().send(MessageBuilder.withPayload(message).build());
 	}
 	
 	private TestWebSocketHandler connectToOutboundChatService() {
