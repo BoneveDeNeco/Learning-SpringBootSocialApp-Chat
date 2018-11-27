@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketSession;
 
 import reactor.core.publisher.Mono;
 
 public abstract class UserParsingHandshakeHandler implements WebSocketHandler{
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserParsingHandshakeHandler.class);
 
 	protected final Map<String, String> userMap;
 	

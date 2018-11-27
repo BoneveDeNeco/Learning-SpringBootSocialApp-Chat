@@ -78,7 +78,7 @@ public class OutboundChatServiceIntegrationTests {
 		
 		sendMessage(MESSAGE);
 
-		assertThat(testWebSocketHandler.receivedMessage.get(10, TimeUnit.SECONDS)).isEqualTo(MESSAGE);
+		assertThat(testWebSocketHandler.receivedMessage.get(10, TimeUnit.SECONDS)).contains(MESSAGE);
 	}
 	
 	private boolean sendMessage(String message) {
@@ -90,7 +90,7 @@ public class OutboundChatServiceIntegrationTests {
 		TestWebSocketHandler testWebSocketHandler = new TestWebSocketHandler();
 		
 		try {
-			client.execute(URI.create("ws://localhost:" + port + "/topic/chatMessage.new"), testWebSocketHandler)
+			client.execute(URI.create("ws://localhost:" + port + "/topic/chatMessage.new?user=Marvin"), testWebSocketHandler)
 			//.subscribe(aVoid -> System.out.println("Subscribed")); //Doesn't work
 			.block(Duration.ofSeconds(2));//Doesn't look good...
 		} catch (RuntimeException e) {
